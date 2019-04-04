@@ -20,8 +20,6 @@ public class Problem17 {
 
         new Problem17();
 
-        LOGGER.debug("Result: " + 1%10);
-
         LOGGER.debug("Stopping the app...");
     }
 
@@ -41,7 +39,7 @@ public class Problem17 {
             int pos1 = (int)bin1 % 10;
             int pos2 = (int)bin2 % 10;
 
-            int posTotal = pos1 + pos2;
+            int posTotal = pos1 + pos2 + remainder;
 
             if (posTotal > 1) {
                 posTotal = 0;
@@ -55,7 +53,7 @@ public class Problem17 {
             bin1 /= 10;
             bin2 /= 10;
 
-        } while (bin1/10 > 0 || bin2/10 > 0);
+        } while (bin1 > 0 || bin2 > 0);
 
         if (remainder != 0) {
             result = 1 + result;
