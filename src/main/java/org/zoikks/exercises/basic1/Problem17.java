@@ -3,11 +3,19 @@ package org.zoikks.exercises.basic1;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
  *
  * A program that adds two binary numbers and displays the result.
+ *
+ * Example:
+ *              111
+ *              +11
+ *              ---
+ *             1010
  *
  */
 public class Problem17 {
@@ -18,13 +26,6 @@ public class Problem17 {
 
         LOGGER.debug("Starting the app...");
 
-        new Problem17();
-
-        LOGGER.debug("Stopping the app...");
-    }
-
-    private Problem17() {
-
         Scanner scanner = new Scanner(System.in);
 
         System.out.print("Insert first binary number: ");
@@ -32,33 +33,54 @@ public class Problem17 {
 
         System.out.print("Insert secondary binary number: ");
         long bin2 = scanner.nextLong();
-        int remainder = 0;
-        String result = "";
 
-        do {
-            int pos1 = (int)bin1 % 10;
-            int pos2 = (int)bin2 % 10;
+        List<Long> binaryNums = new ArrayList<>();
+        binaryNums.add(bin1);
+        binaryNums.add(bin2);
 
-            int posTotal = pos1 + pos2 + remainder;
+        System.out.println("Total binary number is: " + sum(binaryNums));
 
-            if (posTotal > 1) {
-                posTotal = 0;
-                remainder = 1;
-            } else {
-                remainder = 0;
+        LOGGER.debug("Stopping the app...");
+    }
+
+    static long sum(List<Long> binaryNums) {
+
+        long sum = 0;
+
+        for (long binaryNum : binaryNums) {
+
+            int remainder = 0;
+            long bin1 = sum;
+
+            StringBuilder sb = new StringBuilder();
+
+            do {
+                int pos1 = (int)bin1 % 10;
+                int pos2 = (int)(binaryNum % 10);
+
+                int posTotal = pos1 + pos2 + remainder;
+
+                if (posTotal > 1) {
+                    posTotal %= 2;
+                    remainder = 1;
+                } else {
+                    remainder = 0;
+                }
+
+                sb.insert(0, posTotal);
+
+                bin1 /= 10;
+                binaryNum /= 10;
+
+            } while (bin1 > 0 || binaryNum > 0);
+
+            if (remainder != 0) {
+                sb.insert(0, 1);
             }
 
-            result = posTotal + result;
-
-            bin1 /= 10;
-            bin2 /= 10;
-
-        } while (bin1 > 0 || bin2 > 0);
-
-        if (remainder != 0) {
-            result = 1 + result;
+            sum = Long.valueOf(sb.toString());
         }
 
-        System.out.println("Total binary number is: " + result);
+        return sum;
     }
 }
